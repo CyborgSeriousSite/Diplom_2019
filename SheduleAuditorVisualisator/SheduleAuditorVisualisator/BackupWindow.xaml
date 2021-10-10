@@ -1,0 +1,67 @@
+﻿<Window x:Name="BackupControlWindow" x:Class="SheduleAuditorVisualisator.BackupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Работа с резервными копиями" Height="353.387" Width="430.933" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" MouseUp="BackupControlWindow_MouseUp">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="109*"/>
+            <RowDefinition Height="50*"/>
+        </Grid.RowDefinitions>
+        <TextBox x:Name="BackupTBox" Margin="0,0,9.4,68.6" TextWrapping="Wrap" VerticalContentAlignment="Center" HorizontalAlignment="Right" Width="197" Height="26" VerticalAlignment="Bottom" Grid.Row="1" TextChanged="BackupTBox_TextChanged"/>
+        <Label Content="Название резервной копии" Margin="10,0,0,68.6" VerticalContentAlignment="Center" HorizontalAlignment="Left" Width="165" Grid.Row="1" Height="26" VerticalAlignment="Bottom"/>
+        <GroupBox Header="Существующие резервные копии" Margin="10,10,9.6,9.6">
+            <Grid Margin="0,10,-13.2,-22.2">
+                <ListBox x:Name="ExistBackups" Margin="1,0,13,24" SelectedValuePath="strName" SelectedValue="{Binding strName, Mode=TwoWay}" SelectionChanged="ExistBackups_SelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} ({1})">
+                                        <Binding Path="strName"/>
+                                        <Binding Path="backupTime"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </GroupBox>
+        <Button x:Name="CancelButton" Content="Закрыть" Margin="219,74.2,0,0" VerticalAlignment="Top" BorderThickness="1" Grid.Row="1" Height="19" Click="CancelButton_Click" HorizontalAlignment="Left" Width="189"/>
+        <Button x:Name="SoRButton" Content="Создать резервную копию" Margin="10,50.2,0,0" VerticalAlignment="Top" BorderThickness="1" Grid.Row="1" Height="19" Click="SoRButton_Click" HorizontalAlignment="Left" Width="197">
+            <Button.Style>
+                <Style>
+                    <Style.Triggers>
+                        <DataTrigger Binding ="{Binding ElementName=BackupTBox, Path=Text.Length}" Value="0">
+                            <Setter Property="Button.IsEnabled" Value="false"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        
+        <Button x:Name="DeleteBackup" Content="Удалить резервную копию" Margin="219,50.2,0,0" VerticalAlignment="Top" BorderThickness="1" Grid.Row="1" Height="19" Click="DeleteBackup_Click" HorizontalAlignment="Left" Width="189">
+            <Button.Style>
+                <Style>
+                    <Style.Triggers>
+                        <DataTrigger Binding ="{Binding ElementName=ExistBackups, Path=SelectedIndex}" Value="-1">
+                            <Setter Property="Button.IsEnabled" Value="false"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Button x:Name="LoadBackupButton" Content="Загрузить резервную копию" Margin="10,74.2,0,0" BorderThickness="1" Grid.Row="1" Height="19" VerticalAlignment="Top" HorizontalAlignment="Left" Width="197" Click="LoadBackupButton_Click">
+            <Button.Style>
+                <Style>
+                    <Style.Triggers>
+                        <DataTrigger 
+                         Binding ="{Binding ElementName=ExistBackups, Path=SelectedIndex}" Value="-1">
+                            <Setter Property="Button.IsEnabled" Value="false"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+    </Grid>
+</Window>

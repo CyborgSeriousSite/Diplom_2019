@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Schedule" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="ScheduleContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="groupsSet" EntityType="Schedule.groups" />
+    <EntitySet Name="sheduletimeSet" EntityType="Schedule.sheduletime" />
+    <EntitySet Name="classroomsSet" EntityType="Schedule.classrooms" />
+    <AssociationSet Name="schedulesheduletime" Association="Schedule.schedulesheduletime">
+      <End Role="schedule" EntitySet="classroomsSet" />
+      <End Role="sheduletime" EntitySet="sheduletimeSet" />
+    </AssociationSet>
+    <AssociationSet Name="groupsschedule" Association="Schedule.groupsschedule">
+      <End Role="groups" EntitySet="groupsSet" />
+      <End Role="schedule" EntitySet="classroomsSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="classrooms">
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NUMBER" Type="Int32" Nullable="false" />
+    <Property Name="CoordX" Type="Int32" Nullable="false" />
+    <Property Name="CoordY" Type="Int32" Nullable="false" />
+    <Property Name="Width" Type="Int32" Nullable="false" />
+    <Property Name="Height" Type="Int32" Nullable="false" />
+    <Property Name="Type" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="groups">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NAME" Type="String" Nullable="false" />
+    <NavigationProperty Name="schedule" Relationship="Schedule.groupsschedule" FromRole="groups" ToRole="schedule" />
+  </EntityType>
+  <EntityType Name="sheduletime">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DESCRIPTION" Type="String" Nullable="false" />
+    <Property Name="STARTTIME" Type="Time" Nullable="false" />
+    <Property Name="ENDTIME" Type="Time" Nullable="false" />
+    <NavigationProperty Name="schedule" Relationship="Schedule.schedulesheduletime" FromRole="sheduletime" ToRole="schedule" />
+  </EntityType>
+  <EntityType Name="schedule" BaseType="Schedule.classrooms">
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SHEDULETIME" Type="String" Nullable="false" />
+    <Property Name="GROUPID" Type="String" Nullable="false" />
+    <Property Name="CLASSROOMID" Type="String" Nullable="false" />
+    <NavigationProperty Name="sheduletime" Relationship="Schedule.schedulesheduletime" FromRole="schedule" ToRole="sheduletime" />
+    <NavigationProperty Name="groups" Relationship="Schedule.groupsschedule" FromRole="schedule" ToRole="groups" />
+  </EntityType>
+  <Association Name="schedulesheduletime">
+    <End Type="Schedule.schedule" Role="schedule" Multiplicity="1" />
+    <End Type="Schedule.sheduletime" Role="sheduletime" Multiplicity="*" />
+  </Association>
+  <Association Name="groupsschedule">
+    <End Type="Schedule.groups" Role="groups" Multiplicity="1" />
+    <End Type="Schedule.schedule" Role="schedule" Multiplicity="*" />
+  </Association>
+</Schema>

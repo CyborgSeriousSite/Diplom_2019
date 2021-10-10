@@ -1,0 +1,22 @@
+[Wed Jun 12 14:02:35 2019] [warn] Init: Name-based SSL virtual hosts only work for clients with TLS server name indication support (RFC 4366)
+[Wed Jun 12 14:02:36 2019] [warn] pid file Y:/usr/local/apache/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Wed Jun 12 14:02:36 2019] [warn] Init: Name-based SSL virtual hosts only work for clients with TLS server name indication support (RFC 4366)
+[Wed Jun 12 14:02:36 2019] [notice] Apache/2.2.22 (Win32) mod_ssl/2.2.22 OpenSSL/1.0.1c PHP/5.3.13 configured -- resuming normal operations
+[Wed Jun 12 14:02:36 2019] [notice] Server built: Apr 20 2012 18:42:30
+[Wed Jun 12 14:02:36 2019] [notice] Parent: Created child process 35640
+[Wed Jun 12 14:02:37 2019] [notice] Disabled use of AcceptEx() WinSock2 API
+[Wed Jun 12 14:02:37 2019] [warn] Init: Name-based SSL virtual hosts only work for clients with TLS server name indication support (RFC 4366)
+[Wed Jun 12 14:02:37 2019] [warn] Init: Name-based SSL virtual hosts only work for clients with TLS server name indication support (RFC 4366)
+[Wed Jun 12 14:02:37 2019] [notice] Child 35640: Child process is running
+[Wed Jun 12 14:02:37 2019] [notice] Child 35640: Acquired the start mutex.
+[Wed Jun 12 14:02:37 2019] [notice] Child 35640: Starting 25 worker threads.
+[Wed Jun 12 14:02:37 2019] [notice] Child 35640: Listening on port 443.
+[Wed Jun 12 14:02:37 2019] [notice] Child 35640: Listening on port 8648.
+[Wed Jun 12 14:02:37 2019] [notice] Child 35640: Listening on port 443.
+[Wed Jun 12 14:02:37 2019] [notice] Child 35640: Listening on port 80.
+[Thu Jun 13 07:14:06 2019] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Thu Jun 13 07:14:06 2019] [notice] Child 35640: Exit event signaled. Child process is ending.
+[Thu Jun 13 07:14:07 2019] [notice] Child 35640: Released the start mutex
+[Thu Jun 13 07:14:07 2019] [notice] Child 35640: All worker threads have exited.
+[Thu Jun 13 07:14:09 2019] [notice] Child 35640: Child process is exiting
+[Thu Jun 13 07:14:10 2019] [notice] Parent: Child process exited successfully.

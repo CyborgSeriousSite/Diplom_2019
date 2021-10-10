@@ -1,0 +1,37 @@
+﻿<Window x:Name="LoginWindow" x:Class="SheduleAuditorVisualisator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Height="283.122" Width="338" ResizeMode="CanMinimize" Title="Окно авторизации" WindowStartupLocation="CenterScreen"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
+        xmlns:cm="clr-namespace:System.ComponentModel;assembly=System" FontSize="8" Padding="4" Loaded="LoginWindow_Loaded"
+        >
+    <Grid x:Name="GlobalGrid">
+        <Image x:Name="LoadingIcon" gif:ImageBehavior.AnimatedSource="pack://application:,,,/Images/Loading.gif" Source="pack://application:,,,/Images/Loading.gif" gif:ImageBehavior.RepeatBehavior="Forever" HorizontalAlignment="Center" Height="34" Margin="0" VerticalAlignment="Center" Width="34" Visibility="Hidden"/>
+        <Grid x:Name="MainGrid">
+            <Label Content="Авторизация" HorizontalAlignment="Left" VerticalAlignment="Top" Height="46" Width="336" FontSize="25" BorderThickness="16,0,0,0"/>
+            <TextBlock TextWrapping="WrapWithOverflow" x:Name="ErrorLabel" HorizontalAlignment="Center" Margin="-3,240,0,0" VerticalAlignment="Center" Height="55" Width="336" Background="#FFE3E3E3" FontStyle="Italic" FontWeight="Bold" Foreground="Red" Panel.ZIndex="-4" Text="Ошибка" Padding="12,7,12,3" FontSize="12" Visibility="Hidden"/>
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="43" Margin="10,51,0,0" VerticalAlignment="Top" Width="300" CornerRadius="20,0,0,20">
+                <Grid>
+                    <Image HorizontalAlignment="Left" Margin="6,4,0,0" Width="38" Source="pack://application:,,,/Images/ServerIcon.png" Height="33" VerticalAlignment="Top"/>
+                    <GridSplitter HorizontalAlignment="Left" Height="42" Margin="42,0,0,-0.4" VerticalAlignment="Top" Width="1" Background="Black"/>
+                    <TextBox x:Name="ServerBox" TextWrapping="Wrap" Text="Адрес сервера" Margin="51,0,0.2,-1.4" Height="43" FontSize="29" TextAlignment="Left" BorderThickness="0" Background="#00000000" Foreground="#FF5B5B5B" GotFocus="LoginTextBoxFocus" LostFocus="LoginTextBoxFocusLoose" CaretBrush="Black"/>
+                </Grid>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="43" Margin="10,101,0,0" VerticalAlignment="Top" Width="300" CornerRadius="20,0,0,20">
+                <Grid>
+                    <Image HorizontalAlignment="Left" Margin="5,5,0,0" Width="38" Source="pack://application:,,,/Images/LoginIcon.png" Height="33" VerticalAlignment="Top"/>
+                    <GridSplitter HorizontalAlignment="Left" Height="42" Margin="42,0,0,-0.4" VerticalAlignment="Top" Width="1" Background="Black"/>
+                    <TextBox x:Name="LoginBox" TextWrapping="Wrap" Text="Логин" Margin="51,0,0.2,-1.4" Height="43" FontSize="29" TextAlignment="Left" BorderThickness="0" Background="#00000000" Foreground="#FF5B5B5B" LostFocus="LoginTextBoxFocusLoose" GotFocus="LoginTextBoxFocus" CaretBrush="Black"/>
+                </Grid>
+            </Border>
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="43" Margin="10,151,0,0" VerticalAlignment="Top" Width="300" CornerRadius="20,0,0,20">
+                <Grid>
+                    <Image HorizontalAlignment="Left" Margin="7,4,0,0" Width="38" Source="pack://application:,,,/Images/PasswordIcon.png" Height="33" VerticalAlignment="Top"/>
+                    <GridSplitter HorizontalAlignment="Left" Height="42" Margin="42,0,0,-0.4" VerticalAlignment="Top" Width="1" Background="Black"/>
+                    <PasswordBox x:Name="PassBox" Margin="51,0,0.2,-1.4" Height="43" FontSize="29" BorderThickness="0" Background="#00000000" Foreground="#FF5B5B5B" SelectionOpacity="-1" LostFocus="LoginPasswordBoxFocusLoose" GotFocus="LoginPasswordBoxFocus" CaretBrush="Black"/>
+                </Grid>
+            </Border>
+            <Button x:Name="AuthButton" Content="Войти" HorizontalAlignment="Left" Margin="204,199,0,0" VerticalAlignment="Top" Width="106" Height="36" FontSize="23" BorderThickness="1,1,12,1" Click="StartAuth"/>
+            <CheckBox x:Name="RememberMeCheckbox" Content="Запомнить меня" HorizontalAlignment="Left" Margin="52.612,199,0,0" VerticalAlignment="Top" Height="36" Width="151.388" UseLayoutRounding="False" VerticalContentAlignment="Center" FontSize="16"/>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,641 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
+    
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:RuntimeBinder="clr-namespace:Microsoft.CSharp.RuntimeBinder;assembly=Microsoft.CSharp" x:Name="MainWindow" mc:Ignorable="d" x:Class="SheduleAuditorVisualisator.AfterLoginWindow"
+        Title="Schedule Auditor Visualizator" Loaded="WindowLoaded" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" Height="640" d:DesignWidth="1024" DataContext="{Binding RelativeSource={RelativeSource Self}}" MouseUp="MainWindow_MouseUp">
+    <Grid Margin="0,0,0,0">
+        <Grid x:Name="MainWindowGrid" Margin="0,0,-0.4,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Menu>
+                <MenuItem Header="Файл">
+                    <MenuItem x:Name="MenuBackupButton" Header="Работа с резервными копиями" Click="MenuBackupButton_Click" InputGestureText="Ctrl+B"/>
+                    <Separator/>
+                    <MenuItem x:Name="PreferencesButton" Header="Настройки приложения" InputGestureText="Ctrl+P" IsEnabled="False"/>
+                    <Separator/>
+                    <MenuItem x:Name="MenuDisconnectButton" Header="Отключиться от сервера" Click="MenuDisconnectButton_Click" InputGestureText="Ctrl+D"/>
+                    <MenuItem x:Name="MenuExitButton" Header="Выход" Click="MenuExitButton_Click"/>
+                </MenuItem>
+                <MenuItem Header="Редактирование">
+                    <MenuItem Command="ApplicationCommands.Undo" Header="Отменить"/>
+                    <MenuItem Command="ApplicationCommands.Redo" Header="Повторить"/>
+                    <Separator/>
+                    <MenuItem Command="ApplicationCommands.Cut" Header="Вырезать"/>
+                    <MenuItem Command="ApplicationCommands.Copy" Header="Копировать"/>
+                    <MenuItem Command="ApplicationCommands.Paste" Header="Вставить"/>
+                    <Separator/>
+                    <MenuItem Command="ApplicationCommands.Delete" Header="Удалить"/>
+                </MenuItem>
+                <MenuItem Header="Сервер">
+                    <MenuItem x:Name="UpdateServerTableButton" InputGestureText="F6" Header="Обновить БД на сервере" Click="UpdateServerTableButton_Click"/>
+                    <MenuItem x:Name="LoadServerTableButton" Header="Перезагрузить БД с сервера" InputGestureText="F9" Click="LoadServerTableButton_Click"/>
+                </MenuItem>
+            </Menu>
+            <dragablz:TabablzControl x:Name="TabsControlElement" Margin="10,9.6,9.6,10" Grid.Row="1" UseLayoutRounding="False" RenderTransformOrigin="0.5,0.5" SelectionChanged="TabablzControl_SelectionChanged">
+                <dragablz:TabablzControl.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </dragablz:TabablzControl.RenderTransform>
+                <dragablz:TabablzControl.InterTabController>
+                    <dragablz:InterTabController/>
+                </dragablz:TabablzControl.InterTabController>
+                <TabItem x:Name="ClassRoomsTab" Header="Аудитории">
+                    <Grid PreviewMouseMove="testfuncMove" PreviewMouseLeftButtonDown="testfunc">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="166*"/>
+                            <ColumnDefinition Width="101*"/>
+                        </Grid.ColumnDefinitions>
+                        <DataGrid x:Name="ClassRoomsDatagrid" AutoGenerateColumns="False" Margin="0,0,8,0.4" CanUserResizeColumns="False" CanUserReorderColumns="False" ColumnWidth="*" SelectionChanged="RoomsTableSelection" CanUserResizeRows="False" CanUserAddRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding iID}" Header="ID"/>
+                                <DataGridTextColumn Binding="{Binding iNumber}" Header="Номер"/>
+                                <DataGridTextColumn Binding="{Binding iCoordX}" Header="X"/>
+                                <DataGridTextColumn Binding="{Binding iCoordY}" Header="Y"/>
+                                <DataGridTextColumn Binding="{Binding iWidth}" Header="Ширина"/>
+                                <DataGridTextColumn Binding="{Binding iHeight}" Header="Высота"/>
+                                <DataGridTextColumn Binding="{Binding iType}" Header="Разновидность"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <GroupBox x:Name="ParamsBox" Header="Параметры" Margin="4,0,10.8,0" Grid.Column="1" Height="232" VerticalAlignment="Top">
+                            <Grid Margin="0,10,-2.8,-2.4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Margin="0,0,6.2,0.4">
+                                    <Label Content="ID" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Номер" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Координата X" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Координата Y" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Ширина" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Высота" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Разновидность" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                </StackPanel>
+
+                                <StackPanel Margin="0.2,0,5.6,10" Grid.Column="1">
+                                    <TextBox x:Name="edtIDRM" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.iID, ElementName=ClassRoomsDatagrid, Mode=TwoWay}"/>
+                                    <TextBox x:Name="edtRoomNumber" Height="27" TextWrapping="Wrap" Margin="0,0,-0.6,0" Text="{Binding SelectedItem.iNumber, ElementName=ClassRoomsDatagrid, Mode=TwoWay}" LostFocus="edtChanged"/>
+                                    <TextBox x:Name="edtRoomCoordX" Height="27" TextWrapping="Wrap" Margin="0,0,-0.6,0" Text="{Binding SelectedItem.iCoordX, ElementName=ClassRoomsDatagrid, Mode=TwoWay}" LostFocus="edtChanged"/>
+                                    <TextBox x:Name="edtRoomCoordY" Height="27" TextWrapping="Wrap" Margin="0,0,-0.6,0" Text="{Binding SelectedItem.iCoordY, ElementName=ClassRoomsDatagrid, Mode=TwoWay}" LostFocus="edtChanged"/>
+                                    <TextBox x:Name="edtRoomWidth" Height="27" TextWrapping="Wrap" Margin="0,0,-0.6,0" Text="{Binding SelectedItem.iWidth, ElementName=ClassRoomsDatagrid, Mode=TwoWay}" LostFocus="edtChanged"/>
+                                    <TextBox x:Name="edtRoomHeight" Height="27" TextWrapping="Wrap" Margin="0,0,-0.6,0" Text="{Binding SelectedItem.iHeight, ElementName=ClassRoomsDatagrid, Mode=TwoWay}" LostFocus="edtChanged"/>
+                                    <ComboBox x:Name="edtRoomType" Height="27" Margin="0,0,0.4,0" IsReadOnly="True" SelectedValuePath="Tag" SelectedValue="{Binding SelectedItem.iType, ElementName=ClassRoomsDatagrid, Mode=TwoWay}" SelectionChanged="edtRoomType_SelectionChanged">
+                                        <ComboBoxItem Content="Простая аудитория" Tag="0"/>
+                                        <ComboBoxItem Content="Техническая комната" Tag="3"/>
+                                        <ComboBoxItem Content="Компьютерный класс" Tag="4"/>
+                                        <ComboBoxItem Content="Аудитория с проектором" Tag="5"/>
+                                    </ComboBox>
+
+                                </StackPanel>
+
+                            </Grid>
+                        </GroupBox>
+                        <Button x:Name="DeleteEntryButtonRM" Content="Удалить аудиторию" Grid.Column="1" Margin="4,261,10.8,0" ToolTip="Удаляет выбранную аудиторию из базы данных. Можно также активировать хоткеем (Delete)" Height="19" VerticalAlignment="Top" Click="DeleteEntryButtonRM_Click">
+                            <Button.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding ="{Binding ElementName=ClassRoomsDatagrid, Path=SelectedIndex}" Value="-1">
+                                            <Setter Property="Button.IsEnabled" Value="false"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button x:Name="VisualEditorButton" Content="К визуальному редактору" Grid.Column="1" Margin="4,285,10.8,0" Click="VisualEditorButton_Click" ToolTip="Кнопка для переключения между режимами редактирования. Можно также активировать хоткеем (C)" Height="20" VerticalAlignment="Top"/>
+                        <Grid x:Name="VisualFieldGrid">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="384*"/>
+                                <RowDefinition Height="31*"/>
+                            </Grid.RowDefinitions>
+                            <Canvas x:Name="CanvasField" Margin="0,0,8,0.2" Background="White" ClipToBounds="True" Visibility="Hidden"/>
+                            <ToolBarPanel x:Name="VisualEditorToolbar" Margin="0,0,8,0.4" Height="31" VerticalAlignment="Bottom" Grid.RowSpan="2" Visibility="Hidden">
+                                <ToolBar Height="31">
+                                    <Button x:Name="PrevLevelButton" Content="&lt;" Margin="0,0,0,-2.4" Height="28" Click="LevelButtonClick"/>
+                                    <TextBox x:Name="LevelTextBox" Text="1" Margin="0,0,0,-2.4" Width="59" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" MaxLength="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" PreviewTextInput="LevelTextBoxTextInput" TextChanged="LevelTextBoxChanged"/>
+                                    <Button x:Name="NextLevelButton" Content="&gt;" Margin="0,0,0,-2.4" Height="28" Click="LevelButtonClick"/>
+                                    <Separator/>
+                                    <Button Content="Создать комнату" Height="24" Margin="0,2,0,-0.4" Width="108" Click="CreateNewRoom"/>
+                                </ToolBar>
+                            </ToolBarPanel>
+                        </Grid>
+                        <Button x:Name="CreateEntryButtonRM" Content="Создать аудиторию" Grid.Column="1" Margin="4,237,10.8,0" Click="CreateEntryButtonRM_Click" ToolTip="Создать новую аудиторию в базе данных. Можно также активировать хоткеем (Insert)" Height="19" VerticalAlignment="Top"/>
+
+
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="ScheduleTab" Header="Расписание">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="166*"/>
+                            <ColumnDefinition Width="101*"/>
+                        </Grid.ColumnDefinitions>
+                        <DataGrid x:Name="SheduleDatagrid" AutoGenerateColumns="False" Margin="0,0,8,0.4" CanUserResizeColumns="False" CanUserReorderColumns="False" ColumnWidth="*" SelectionChanged="ScheduleTableSelection" CanUserResizeRows="False" CellEditEnding="SheduleDatagrid_CellEditEnding" CanUserAddRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding iID}" Header="ID"/>
+                                <DataGridComboBoxColumn SelectedValueBinding="{Binding iGroupID}" DisplayMemberPath="strName" SelectedValuePath="iID" Header="Группа">
+                                    <DataGridComboBoxColumn.ElementStyle>
+                                        <Style TargetType="{x:Type ComboBox}">
+                                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.GroupsDB_CBOX, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                        </Style>
+                                    </DataGridComboBoxColumn.ElementStyle>
+                                    <DataGridComboBoxColumn.EditingElementStyle>
+                                        <Style TargetType="{x:Type ComboBox}">
+                                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.GroupsDB_CBOX, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                        </Style>
+                                    </DataGridComboBoxColumn.EditingElementStyle>
+                                </DataGridComboBoxColumn>
+                                <DataGridComboBoxColumn SelectedValueBinding="{Binding iSubjectID}" DisplayMemberPath="strName" SelectedValuePath="iID" Header="Дисциплина">
+                                    <DataGridComboBoxColumn.ElementStyle>
+                                        <Style TargetType="{x:Type ComboBox}">
+                                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.SubjectsDB_CBOX, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                        </Style>
+                                    </DataGridComboBoxColumn.ElementStyle>
+                                    <DataGridComboBoxColumn.EditingElementStyle>
+                                        <Style TargetType="{x:Type ComboBox}">
+                                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.SubjectsDB_CBOX, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                        </Style>
+                                    </DataGridComboBoxColumn.EditingElementStyle>
+                                </DataGridComboBoxColumn>
+                                <DataGridTextColumn Binding="{Binding dStartTime}" Header="Время начала"/>
+                                <DataGridTextColumn Binding="{Binding dEndTime}" Header="Время конца"/>
+                                <DataGridComboBoxColumn SelectedValueBinding="{Binding iClassRoomID}" DisplayMemberPath="iNumber" SelectedValuePath="iID" Header="Аудитория">
+                                    <DataGridComboBoxColumn.ElementStyle>
+                                        <Style TargetType="{x:Type ComboBox}">
+                                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.ClassRoomsDB_CBOX, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                        </Style>
+                                    </DataGridComboBoxColumn.ElementStyle>
+                                    <DataGridComboBoxColumn.EditingElementStyle>
+                                        <Style TargetType="{x:Type ComboBox}">
+                                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.ClassRoomsDB_CBOX, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                        </Style>
+                                    </DataGridComboBoxColumn.EditingElementStyle>
+                                </DataGridComboBoxColumn>
+                                <DataGridComboBoxColumn SelectedValueBinding="{Binding iTeacherID}" DisplayMemberPath="strFIO" SelectedValuePath="iID" Header="Преподаватель">
+                                    <DataGridComboBoxColumn.ElementStyle>
+                                        <Style TargetType="{x:Type ComboBox}">
+                                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Prepod_CBOX, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                        </Style>
+                                    </DataGridComboBoxColumn.ElementStyle>
+                                    <DataGridComboBoxColumn.EditingElementStyle>
+                                        <Style TargetType="{x:Type ComboBox}">
+                                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.Prepod_CBOX, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                        </Style>
+                                    </DataGridComboBoxColumn.EditingElementStyle>
+                                </DataGridComboBoxColumn>
+
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <GroupBox x:Name="ScheduleParamsBox" Header="Параметры" Margin="4,0,10.8,0" Grid.Column="1" Height="173" VerticalAlignment="Top">
+                            <Grid Margin="0,10,-3.2,-12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Margin="0,0,6.2,0.4">
+                                    <Label x:Name="IDSlabel" Content="ID" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Группа" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Аудитория" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Дисциплина" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Преподаватель" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                </StackPanel>
+
+                                <StackPanel Margin="0.2,0,5.6,10" Grid.Column="1">
+                                    <TextBox x:Name="edtID" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.iID, ElementName=SheduleDatagrid, Mode=TwoWay}"/>
+                                    <ComboBox x:Name="edtGroup" Height="27" SelectionChanged="edtGroup_SelectionChanged" SelectedValuePath="iID" SelectedValue="{Binding SelectedItem.iGroupID, ElementName=SheduleDatagrid, Mode=TwoWay}"/>
+                                    <ComboBox x:Name="edtRoom" Height="27" SelectedValuePath="iID" SelectedValue="{Binding SelectedItem.iClassRoomID, ElementName=SheduleDatagrid, Mode=TwoWay}"/>
+                                    <ComboBox x:Name="edtSubject" Height="27" SelectedValuePath="iID" SelectedValue="{Binding SelectedItem.iSubjectID, ElementName=SheduleDatagrid, Mode=TwoWay}"/>
+                                    <ComboBox x:Name="edtTeacher" Height="27" SelectedValuePath="iID" SelectedValue="{Binding SelectedItem.iTeacherID, ElementName=SheduleDatagrid, Mode=TwoWay}"/>
+                                </StackPanel>
+
+                            </Grid>
+                        </GroupBox>
+                        <GroupBox x:Name="VariantBox" Header="Особые параметры (Время)" Margin="6,178,8.8,0" Grid.Column="1" Height="99" VerticalAlignment="Top">
+                            <Grid Margin="0,10,-3.2,-12.2">
+                                <StackPanel Margin="0,0,0,10">
+                                    <Grid Margin="0,0,0.4,0" Height="16" VerticalAlignment="Top">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <RadioButton GroupName="VariantSelector" x:Name="rbSVariant" Content="Упрощенный вариант" Grid.ColumnSpan="2" Margin="0,0,-0.8,0" IsChecked="True" Checked="rbSVariant_Checked" />
+                                        <RadioButton GroupName="VariantSelector" x:Name="rbEVariant" Content="Расширенный вариант" Grid.Column="1" Checked="rbEVariant_Checked" />
+                                    </Grid>
+                                    <Grid x:Name="SimpleTimeBox" Height="55" VerticalAlignment="Top">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Дата занятия" Margin="0,-2,0,0" VerticalAlignment="Top" Height="28"/>
+                                        <DatePicker x:Name="dpickerSimple" Grid.Column="1" VerticalAlignment="Top" Height="26" IsTodayHighlighted="True" SelectedDateChanged="dpicker_SelectedDateChanged"/>
+                                        <Label Content="Время занятия" Margin="0,26,0,-28" VerticalAlignment="Top" Height="28"/>
+                                        <ComboBox x:Name="edtTime" Grid.Column="1" Margin="0,26,0,0" VerticalAlignment="Top" Height="28" SelectionChanged="edtTime_SelectionChanged"/>
+                                    </Grid>
+                                    <Grid x:Name="ExtendedTimeBox" Height="81" VerticalAlignment="Top" Visibility="Collapsed">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Дата занятия" Margin="0,-2,0,0" VerticalAlignment="Top" Height="28"/>
+                                        <DatePicker x:Name="dpickerExtended" Grid.Column="1" VerticalAlignment="Top" Height="26" IsTodayHighlighted="True" SelectedDateChanged="dpicker_SelectedDateChanged"/>
+                                        <Label Content="Время начала занятия" Margin="0,26,0,-28" VerticalAlignment="Top" Height="28"/>
+                                        <xctk:TimePicker x:Name="pStartTimespanbox" Grid.Column="1" Margin="0,26,0,28" ValueChanged="pStartTimespanbox_ValueChanged"/>
+                                        <Label Content="Время окончания занятия" Margin="0,54,0,-27" VerticalAlignment="Top" Height="28"/>
+                                        <xctk:TimePicker x:Name="pEndTimespanbox" Grid.Column="1" Margin="0,53,0,2" ValueChanged="pEndTimespanbox_ValueChanged"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+                        <Button x:Name="CreateEntryButton" Content="Назначить занятие" Grid.Column="1" Margin="6,282,8.8,0" Click="CreateEntryButton_Click" ToolTip="Создать занятие в базе данных. Можно также активировать хоткеем (Insert)" Height="19" VerticalAlignment="Top"/>
+                        <Button x:Name="DeleteEntryButton" Content="Удалить занятие" Grid.Column="1" Margin="6,308,8.8,0" Height="19" VerticalAlignment="Top" Click="DeleteEntryButton_Click">
+                            <Button.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding ="{Binding ElementName=SheduleDatagrid, Path=SelectedIndex}" Value="-1">
+                                            <Setter Property="Button.IsEnabled" Value="false"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="SubjectsTab" Header="Дисциплины">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="166*"/>
+                            <ColumnDefinition Width="101*"/>
+                        </Grid.ColumnDefinitions>
+                        <DataGrid x:Name="SubjectsDatagrid" AutoGenerateColumns="false" Margin="0,0,8,0.4" CanUserResizeColumns="False" CanUserReorderColumns="False" ColumnWidth="*" SelectionChanged="SubjectsTableSelection" CanUserResizeRows="False" CanUserAddRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding iID}" Header="ID"/>
+                                <DataGridTextColumn Binding="{Binding strName}" Header="Название"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <GroupBox x:Name="SubjectsParamBox" Header="Параметры" Margin="4,0,10.8,0" Grid.Column="1" Height="94" VerticalAlignment="Top">
+                            <Grid Margin="0,10,-2.8,-2.4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Margin="0,0,8.6,11">
+                                    <Label Content="ID" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Название" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                </StackPanel>
+
+                                <StackPanel Margin="1.4,0,5.6,10" Grid.Column="1">
+                                    <TextBox x:Name="edtIDSBJ" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.iID, ElementName=SubjectsDatagrid, Mode=TwoWay}"/>
+                                    <TextBox x:Name="edtNameSBJ" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.strName, ElementName=SubjectsDatagrid, Mode=TwoWay}"/>
+                                </StackPanel>
+
+                            </Grid>
+                        </GroupBox>
+                        <Button x:Name="CreateEntryButtonSBJ" Content="Создать дисциплину" Grid.Column="1" Margin="5,102,9.8,0" Click="CreateEntrySBJButton_Click" ToolTip="Создать дисциплину в базе данных. Можно также активировать хоткеем (Insert)" Height="19" VerticalAlignment="Top"/>
+                        <Button x:Name="DeleteEntryButtonSBJ" Content="Удалить дисциплину" Grid.Column="1" Margin="5,126,9.8,0" Height="19" VerticalAlignment="Top" Click="DeleteEntryButtonSBJ_Click">
+                            <Button.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding ="{Binding ElementName=SubjectsDatagrid, Path=SelectedIndex}" Value="-1">
+                                            <Setter Property="Button.IsEnabled" Value="false"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="GroupsTab" Header="Группы">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="166*"/>
+                            <ColumnDefinition Width="101*"/>
+                        </Grid.ColumnDefinitions>
+                        <DataGrid x:Name="GroupsDatagrid" AutoGenerateColumns="False" Margin="0,0,8,0.4" CanUserResizeColumns="False" CanUserReorderColumns="False" ColumnWidth="*" SelectionChanged="GroupsTableSelection" CanUserResizeRows="False" CanUserAddRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding iID}" Header="ID"/>
+                                <DataGridTextColumn Binding="{Binding strName}" Header="Название группы"/>
+                                <DataGridComboBoxColumn SelectedValueBinding="{Binding iPodrazID}" DisplayMemberPath="strName" SelectedValuePath="iID" Header="Подразделение">
+                                    <DataGridComboBoxColumn.ElementStyle>
+                                        <Style TargetType="{x:Type ComboBox}">
+                                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.PodrazdelDB_CBOX, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                        </Style>
+                                    </DataGridComboBoxColumn.ElementStyle>
+                                    <DataGridComboBoxColumn.EditingElementStyle>
+                                        <Style TargetType="{x:Type ComboBox}">
+                                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.PodrazdelDB_CBOX, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                        </Style>
+                                    </DataGridComboBoxColumn.EditingElementStyle>
+                                </DataGridComboBoxColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <GroupBox x:Name="GroupsParamsBox" Header="Параметры" Margin="4,0,10.8,0" Grid.Column="1" Height="121" VerticalAlignment="Top">
+                            <Grid Margin="0,10,-2.8,-2.4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Margin="0,0,8.6,11">
+                                    <Label Content="ID" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Название" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Подразделение" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                </StackPanel>
+
+                                <StackPanel Margin="1.4,0,5.6,10" Grid.Column="1">
+                                    <TextBox x:Name="edtIDGRPS" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.iID, ElementName=GroupsDatagrid, Mode=TwoWay}"/>
+                                    <TextBox x:Name="edtNameGRPS" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.strName, ElementName=GroupsDatagrid, Mode=TwoWay}"/>
+                                    <ComboBox x:Name="edtPodrazGRPS" Height="27" SelectedValuePath="iID" SelectedValue="{Binding SelectedItem.iPodrazID, ElementName=GroupsDatagrid, Mode=TwoWay}"/>
+                                </StackPanel>
+
+                            </Grid>
+                        </GroupBox>
+                        <Button x:Name="CreateEntryButtonGRPS" Content="Создать группу" Grid.Column="1" Margin="4,124,9.8,0" Height="19" VerticalAlignment="Top" Click="CreateEntryButtonGRPS_Click"/>
+                        <Button x:Name="DeleteEntryButtonGRPS" Content="Удалить группу" Grid.Column="1" Margin="4,148,9.8,0" Height="19" VerticalAlignment="Top" Click="DeleteEntryButtonGRPS_Click">
+                            <Button.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding ="{Binding ElementName=GroupsDatagrid, Path=SelectedIndex}" Value="-1">
+                                            <Setter Property="Button.IsEnabled" Value="false"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="TeachersTab" Header="Преподаватели">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="166*"/>
+                            <ColumnDefinition Width="101*"/>
+                        </Grid.ColumnDefinitions>
+                        <DataGrid x:Name="PrepodDataGrid" AutoGenerateColumns="False" Margin="0,0,8,0.4" CanUserResizeColumns="False" CanUserReorderColumns="False" ColumnWidth="*" CanUserResizeRows="False" CanUserAddRows="False" SelectionChanged="PrepodDataGrid_SelectionChanged">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding iID}" Header="ID"/>
+                                <DataGridTextColumn Binding="{Binding strFIO}" Header="ФИО"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <GroupBox x:Name="TeacherParamsBox" Header="Параметры" Margin="4,0,10.8,0" Grid.Column="1" Height="92" VerticalAlignment="Top">
+                            <Grid Margin="0,10,-2.4,-30.8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Margin="0,0,4.8,10.2">
+                                    <Label Content="ID" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="ФИО" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                </StackPanel>
+
+                                <StackPanel Margin="1.2,0,5.6,10.2" Grid.Column="1">
+                                    <TextBox x:Name="edtIDPREP" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.iID, ElementName=PrepodDataGrid, Mode=TwoWay}"/>
+                                    <TextBox x:Name="edtNamePREP" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.strFIO, ElementName=PrepodDataGrid, Mode=TwoWay}"/>
+                                </StackPanel>
+
+                            </Grid>
+                        </GroupBox>
+                        <Button x:Name="CreateEntryButtonPREP" Content="Добавить преподавателя" Grid.Column="1" Margin="5,97,8.8,0" Height="19" VerticalAlignment="Top" Click="CreateEntryButtonPREP_Click"/>
+                        <Button x:Name="DeleteEntryButtonPREP" Content="Убрать преподавателя" Grid.Column="1" Margin="5,121,9.8,0" Height="19" VerticalAlignment="Top" Click="DeleteEntryButtonPREP_Click">
+                            <Button.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding ="{Binding ElementName=PrepodDataGrid, Path=SelectedIndex}" Value="-1">
+                                            <Setter Property="Button.IsEnabled" Value="false"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="ScheduleTimeTab" Header="Время занятий">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="166*"/>
+                            <ColumnDefinition Width="101*"/>
+                        </Grid.ColumnDefinitions>
+                        <DataGrid x:Name="SheduleTimeDatagrid" AutoGenerateColumns="False" Margin="0,0,8,0.4" CanUserResizeColumns="False" CanUserReorderColumns="False" ColumnWidth="*" CanUserResizeRows="False" SelectionChanged="SheduleTimeDatagrid_SelectionChanged" CanUserAddRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding iID}" Header="ID"/>
+                                <DataGridTextColumn Binding="{Binding strDescription}" Header="Название"/>
+                                <DataGridTextColumn Binding="{Binding dStartTime}" Header="Время начала"/>
+                                <DataGridTextColumn Binding="{Binding dEndTime}" Header="Время окончания"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <GroupBox x:Name="ScheduleTimeParamsBox" Header="Параметры" Margin="4,0,10.8,0" Grid.Column="1" Height="147" VerticalAlignment="Top">
+                            <Grid Margin="0,10,-3.2,-22.8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Margin="0,0,4.8,10.2">
+                                    <Label Content="ID" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Наименование" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Время начала" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Время окончания" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                </StackPanel>
+
+                                <StackPanel Margin="1.2,0,5.6,10.2" Grid.Column="1">
+                                    <TextBox x:Name="edtIDSD" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.iID, ElementName=SheduleTimeDatagrid, Mode=TwoWay}"/>
+                                    <TextBox x:Name="edtDESCSD" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.strDescription, ElementName=SheduleTimeDatagrid, Mode=TwoWay}"/>
+                                    <xctk:TimePicker x:Name="edtSTSD" Height="27" Margin="0,0,0.2,0" ValueChanged="edtSTSD_ValueChanged"/>
+                                    <xctk:TimePicker x:Name="edtETSD" Height="27" Margin="0,0,0.2,0" ValueChanged="edtETSD_ValueChanged"/>
+                                </StackPanel>
+
+                            </Grid>
+                        </GroupBox>
+                        <Button x:Name="CreateEntryButtonST" Content="Добавить время пары" Grid.Column="1" Margin="5,152,8.8,0" Height="19" VerticalAlignment="Top" Click="CreateEntryButtonST_Click"/>
+                        <Button x:Name="DeleteEntryButtonST" Content="Удалить время пары" Grid.Column="1" Margin="6,176,8.8,0" Height="19" VerticalAlignment="Top" Click="DeleteEntryButtonST_Click">
+                            <Button.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding ="{Binding ElementName=SheduleTimeDatagrid, Path=SelectedIndex}" Value="-1">
+                                            <Setter Property="Button.IsEnabled" Value="false"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="PodrazdelTab" Header="Подразделения">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="166*"/>
+                            <ColumnDefinition Width="101*"/>
+                        </Grid.ColumnDefinitions>
+                        <DataGrid x:Name="PodrazdelDataGrid" AutoGenerateColumns="False" Margin="0,0,8,0.4" CanUserResizeColumns="False" CanUserReorderColumns="False" ColumnWidth="*" CanUserResizeRows="False" CanUserAddRows="False" SelectionChanged="PodrazdelDataGrid_SelectionChanged">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding iID}" Header="ID"/>
+                                <DataGridTextColumn Binding="{Binding strName}" Header="Название"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <GroupBox x:Name="PodrazdelParamsBox" Header="Параметры" Margin="4,0,10.8,0" Grid.Column="1" Height="92" VerticalAlignment="Top">
+                            <Grid Margin="0,10,-2.4,-30.8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Margin="0,0,4.8,10.2">
+                                    <Label Content="ID" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Название" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                </StackPanel>
+
+                                <StackPanel Margin="1.2,0,5.6,10.2" Grid.Column="1">
+                                    <TextBox x:Name="edtIDPODR" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.iID, ElementName=PodrazdelDataGrid, Mode=TwoWay}"/>
+                                    <TextBox x:Name="edtNamePODR" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.strName, ElementName=PodrazdelDataGrid, Mode=TwoWay}"/>
+                                </StackPanel>
+
+                            </Grid>
+                        </GroupBox>
+                        <Button x:Name="CreateEntryButtonPODR" Content="Создать подразделение" Grid.Column="1" Margin="5,97,8.8,0" Height="19" VerticalAlignment="Top" Click="CreateEntryButtonPODR_Click"/>
+                        <Button x:Name="DeleteEntryButtonPODR" Content="Удалить подразделение" Grid.Column="1" Margin="5,121,9.8,0" Height="19" VerticalAlignment="Top" Click="DeleteEntryButtonPODR_Click">
+                            <Button.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding ="{Binding ElementName=PodrazdelDataGrid, Path=SelectedIndex}" Value="-1">
+                                            <Setter Property="Button.IsEnabled" Value="false"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="SiteUsersTab" Header="Пользователи сайта">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="166*"/>
+                            <ColumnDefinition Width="101*"/>
+                        </Grid.ColumnDefinitions>
+                        <DataGrid x:Name="SiteUsersDataGrid" AutoGenerateColumns="False" Margin="0,0,8,0.4" FrozenColumnCount="4" CanUserResizeColumns="False" CanUserReorderColumns="False" ColumnWidth="*" CanUserResizeRows="False" SelectionChanged="SiteUsersDataGrid_SelectionChanged" CanUserAddRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding iID}" Header="ID"/>
+                                <DataGridTextColumn Binding="{Binding ULogin}" Header="Логин"/>
+                                <DataGridTextColumn Binding="{Binding UPassword}" Header="Пароль"/>
+                                <DataGridTextColumn Binding="{Binding strName}" Header="Имя"/>
+                                <DataGridTextColumn Binding="{Binding strName2}" Header="Фамилия"/>
+                                <DataGridTextColumn Binding="{Binding strName3}" Header="Отчество"/>
+                                <DataGridComboBoxColumn SelectedValueBinding="{Binding iGroup}" DisplayMemberPath="strName" SelectedValuePath="iID" Header="Группа пользователя">
+                                    <DataGridComboBoxColumn.ElementStyle>
+                                        <Style TargetType="{x:Type ComboBox}">
+                                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.SiteGroups_CBOX, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                        </Style>
+                                    </DataGridComboBoxColumn.ElementStyle>
+                                    <DataGridComboBoxColumn.EditingElementStyle>
+                                        <Style TargetType="{x:Type ComboBox}">
+                                            <Setter Property="ItemsSource" Value="{Binding Path=DataContext.SiteGroups_CBOX, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                        </Style>
+                                    </DataGridComboBoxColumn.EditingElementStyle>
+                                </DataGridComboBoxColumn>
+                                <DataGridTextColumn Binding="{Binding strNumber}" Header="Телефон"/>
+                                <DataGridTextColumn Binding="{Binding strEmail}" Header="e-mail"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <GroupBox x:Name="SiteUsersParamsBox" Header="Параметры" Margin="4,0,10.8,0" Grid.Column="1" Height="276" VerticalAlignment="Top">
+                            <Grid Margin="0,10,-3.2,-22.6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Margin="0,0,4.8,10.2">
+                                    <Label Content="ID" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Логин" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Пароль" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Имя" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Фамилия" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Отчество" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Группа пользователя" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Телефон" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="e-mail" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                </StackPanel>
+
+                                <StackPanel Margin="1.2,0,5.6,10.2" Grid.Column="1">
+                                    <TextBox x:Name="edtIDSU" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.iID, ElementName=SiteUsersDataGrid, Mode=TwoWay}"/>
+                                    <TextBox x:Name="edtLoginSU" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.ULogin, ElementName=SiteUsersDataGrid, Mode=TwoWay}"/>
+                                    <TextBox x:Name="edtPasswordSU" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.UPassword, ElementName=SiteUsersDataGrid, Mode=TwoWay}"/>
+                                    <TextBox x:Name="edtNameSU" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.strName, ElementName=SiteUsersDataGrid, Mode=TwoWay}"/>
+                                    <TextBox x:Name="edtName2SU" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.strName2, ElementName=SiteUsersDataGrid, Mode=TwoWay}"/>
+                                    <TextBox x:Name="edtName3SU" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.strName3, ElementName=SiteUsersDataGrid, Mode=TwoWay}"/>
+                                    <ComboBox x:Name="edtGroupSU" Height="27" SelectedValuePath="iID" SelectedValue="{Binding SelectedItem.iGroup, ElementName=SiteUsersDataGrid, Mode=TwoWay}"/>
+                                    <TextBox x:Name="edtPhoneSU" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.strNumber, ElementName=SiteUsersDataGrid, Mode=TwoWay}"/>
+                                    <TextBox x:Name="edtMailSU" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.strEmail, ElementName=SiteUsersDataGrid, Mode=TwoWay}"/>
+                                </StackPanel>
+
+                            </Grid>
+                        </GroupBox>
+                        <Button x:Name="CreateEntryButtonSU" Content="Зарегистрировать пользователя" Grid.Column="1" Margin="3,281,10.8,0" Height="19" VerticalAlignment="Top" Click="CreateEntryButtonSU_Click"/>
+                        <Button x:Name="DeleteEntryButtonSU" Content="Удалить пользователя" Grid.Column="1" Margin="3,305,10.8,0" Height="19" VerticalAlignment="Top" Click="DeleteEntryButtonSU_Click">
+                            <Button.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding ="{Binding ElementName=SiteUsersDataGrid, Path=SelectedIndex}" Value="-1">
+                                            <Setter Property="Button.IsEnabled" Value="false"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="SiteGroupsTab" Header="Группы сайта">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="166*"/>
+                            <ColumnDefinition Width="101*"/>
+                        </Grid.ColumnDefinitions>
+                        <DataGrid x:Name="SiteGroupsDataGrid" AutoGenerateColumns="False" Margin="0,0,8,0.4" CanUserResizeColumns="False" CanUserReorderColumns="False" ColumnWidth="*" CanUserResizeRows="False" CanUserAddRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding iID}" Header="ID"/>
+                                <DataGridTextColumn Binding="{Binding strName}" Header="Название"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <GroupBox x:Name="SiteGroupsParamsBox" Header="Параметры" Margin="4,0,10.8,0" Grid.Column="1" Height="92" VerticalAlignment="Top">
+                            <Grid Margin="0,10,-2.4,-30.8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Margin="0,0,4.8,10.2">
+                                    <Label Content="ID" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                    <Label Content="Название" Height="27" Margin="0,0,0.2,0" Background="{x:Null}" BorderThickness="2,1,3,1"/>
+                                </StackPanel>
+
+                                <StackPanel Margin="1.2,0,5.6,10.2" Grid.Column="1">
+                                    <TextBox x:Name="edtIDSGRPS" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.iID, ElementName=SiteGroupsDataGrid, Mode=TwoWay}"/>
+                                    <TextBox x:Name="edtNameSGRPS" Height="27" TextWrapping="Wrap" Margin="0,0,0.2,0" Text="{Binding SelectedItem.strName, ElementName=SiteGroupsDataGrid, Mode=TwoWay}"/>
+                                </StackPanel>
+
+                            </Grid>
+                        </GroupBox>
+                        <Button x:Name="CreateEntryButtonSGRPS" Content="Создать группу" Grid.Column="1" Margin="5,97,8.8,0" Height="19" VerticalAlignment="Top" Click="CreateEntryButtonSGRPS_Click"/>
+                        <Button x:Name="DeleteEntryButtonSGRPS" Content="Удалить группу" Grid.Column="1" Margin="5,121,9.8,0" Height="19" VerticalAlignment="Top" Click="DeleteEntryButtonSGRPS_Click">
+                            <Button.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding ="{Binding ElementName=SiteGroupsDataGrid, Path=SelectedIndex}" Value="-1">
+                                            <Setter Property="Button.IsEnabled" Value="false"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
+                </TabItem>
+            </dragablz:TabablzControl>
+        </Grid>
+        <Grid x:Name="ProcessingGrid" Margin="0,0,-0.4,0" Visibility="Collapsed">
+            <Rectangle Fill="#BFCBCBCB" Stroke="Black" Margin="0,0,0,0"/>
+            <Image x:Name="LoadingIcon" gif:ImageBehavior.AnimatedSource="pack://application:,,,/Images/Loading.gif" Source="pack://application:,,,/Images/Loading.gif" gif:ImageBehavior.RepeatBehavior="Forever" HorizontalAlignment="Center" Height="34" Margin="0" VerticalAlignment="Center" Width="34"/>
+            <Label Content="Применение изменений" Margin="10,10,0,327.4" FontSize="20" HorizontalAlignment="Center" Width="1008" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center"/>
+            <Label x:Name="ProcessingDisplayingSteps" Content="..." Margin="10,322,10,10.4" FontSize="20" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Width="998"/>
+        </Grid>
+    </Grid>
+</Window>
